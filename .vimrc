@@ -5,21 +5,20 @@ let g:ale_disable_lsp = 1
 
 "============================= Plugins ==================================
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin()
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'vim-airline/vim-airline'
-Plugin 'morhetz/gruvbox'
-Plugin 'vimwiki/vimwiki'
-Plugin 'w0rp/ale'
-Plugin 'neoclide/coc.nvim'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'preservim/nerdtree'
-Plugin 'tpope/vim-fugitive'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'vim-airline/vim-airline'
+Plug 'morhetz/gruvbox'
+Plug 'vimwiki/vimwiki'
+Plug 'w0rp/ale'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'sheerun/vim-polyglot'
+Plug 'preservim/nerdtree'
+Plug 'tpope/vim-fugitive'
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()            " required
 filetype plugin indent on    " required
 
 "======================= Basic Editor config =============================
@@ -56,7 +55,7 @@ set rtp+=/usr/local/opt/fzf
 " Ale linter
 let g:ale_php_phpcs_executable ='/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/vendor/bin/phpcs --standard=sniffs.xml'
 let g:ale_php_phpcs_standard='/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/sniffs.xml'
-let b:ale_linters = ['php', 'phpcs']
+let b:ale_linters = ['php', 'phpcs', 'javascript', 'eslint']
 let g:ale_php_phpcbf_executable = '/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/vendor/bin/phpcbf'
 let g:ale_php_phpcbf_standard = '/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/sniffs.xml'
 let g:ale_fixers = {'php': ['phpcbf']}
