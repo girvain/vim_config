@@ -16,6 +16,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-fugitive'
+Plug 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-vinegar'
 
 " All of your Plugins must be added before the following line
 call plug#end()            " required
