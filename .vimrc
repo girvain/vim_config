@@ -18,6 +18,7 @@ Plug 'preservim/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-vinegar'
+Plug 'corntrace/bufexplorer'
 
 " All of your Plugins must be added before the following line
 call plug#end()            " required
