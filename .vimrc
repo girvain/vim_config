@@ -12,8 +12,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
-Plug 'vimwiki/vimwiki'
-Plug 'w0rp/ale'
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'xolox/vim-misc'
+"Plug 'w0rp/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdtree'
@@ -22,6 +24,12 @@ Plug 'jiangmiao/auto-pairs'
 "Plug 'tpope/vim-vinegar'
 Plug 'corntrace/bufexplorer'
 Plug 'ryanoasis/vim-devicons'
+Plug 'embear/vim-localvimrc'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'preservim/nerdcommenter'
+"Plug 'prettier/vim-prettier'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " All of your Plugins must be added before the following line
 call plug#end()            " required
@@ -35,8 +43,8 @@ set number
 set smartindent
 set cursorline
 set clipboard=unnamed " lets be able to cut and paste
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 "set expandtab " spaces instead of tab
 set autoindent
 set backspace=indent,eol,start
@@ -51,7 +59,7 @@ set hlsearch
 
 " set colorscheme
 let g:gruvbox_bold = '1' 
-let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_dark = 'medium'
 colorscheme gruvbox
 "colorscheme nord
 
@@ -65,14 +73,15 @@ set rtp+=/usr/local/opt/fzf
 let g:fzf_layout = { 'down':  '30%'}
 
 " Ale linter
-let g:ale_php_phpcs_executable ='/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/vendor/bin/phpcs --standard=sniffs.xml'
-let g:ale_php_phpcs_standard='/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/sniffs.xml'
-let b:ale_linters = ['php', 'phpcs', 'javascript', 'eslint']
-let g:ale_php_phpcbf_executable = '/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/vendor/bin/phpcbf'
-let g:ale_php_phpcbf_standard = '/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/sniffs.xml'
-let g:ale_fixers = {'php': ['phpcbf']}
-"let g:ale_root = {'php': ['/Users/gavinross/Work/wetherspoons/wetherspoons']}
-let g:airline#extensions#ale#enabled = 1
+"let g:ale_php_phpcs_executable ='/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/vendor/bin/phpcs --standard=sniffs.xml'
+"let g:ale_php_phpcs_standard='/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/sniffs.xml'
+"let g:ale_php_phpcbf_executable = '/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/vendor/bin/phpcbf'
+"let g:ale_php_phpcbf_standard = '/Users/gavinross/Work/wetherspoons/wetherspoons/vendor/wetherspoons/client/sniffs.xml'
+
+"let g:ale_fixers = {'php': ['phpcbf']}
+"let b:ale_linters = ['php', 'phpcs', 'javascript', 'eslint']
+""let g:ale_root = {'php': ['/Users/gavinross/Work/wetherspoons/wetherspoons']}
+"let g:airline#extensions#ale#enabled = 1
 
 " Coc
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -88,6 +97,27 @@ endfunction
 
 set guifont=DroidSansMono\ Nerd\ Font:h11
 
+" python
+let g:python3_host_prog = expand('/usr/local/bin/python3')
+
+" Ale
+" Fix files with prettier, and then ESLint.
+"let b:ale_fixers = {'javascript': ['prettier', 'eslint']}
+
+" Prettier
+"let g:prettier#autoformat = 1
+"let g:prettier#autoformat_require_pragma = 0
+
+" Vim-Go
+let g:go_def_mapping_enabled = 0
+let g:go_code_completion_enabled = 0
+let g:go_doc_keywordprg_enabled = 0
+
+" Auto formatting and importing
+let g:go_fmt_autosave = 1
+
+"======================= Auto Commands =============================
+
 "======================= Keyboard Shortcuts =============================
 " remap C-w for window management
 nnoremap <leader>w <C-w>
@@ -99,10 +129,6 @@ nnoremap <leader>wc :hide <cr>
 nnoremap <leader>bn :bn <cr>
 nnoremap <leader>bp :bp <cr>
 nnoremap <leader>bd :bd <cr>
-
-" remap vimwiki defaults to not clash with window stuff
-nmap <Leader>vww <Plug>VimwikiIndex 
-nmap <Leader>vws <Plug>VimwikiUISelect
 
 " find files, code and buffers with fzf
 "nmap <Leader>f :FZF<CR>
@@ -118,6 +144,7 @@ nnoremap <leader>bs :BufExplorerHorizontalSplit<cr>
 
 " toggle file explorer
 nnoremap <leader>e :Explore<cr>
+nnoremap <leader>t :NERDTreeToggle<cr>
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
@@ -126,5 +153,13 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " linter commands
-nnoremap <leader>le :ALEPopulateLocList<cr>
-nnoremap <leader>lf :ALEFix<cr>
+nnoremap <leader> le :CocDiagnostics<cr>
+" Remap keys for applying codeAction to the current line.
+nmap <leader>lc  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>lf  <Plug>(coc-fix-current)
+" Symbol renaming.
+nmap <leader>lr <Plug>(coc-rename)
+
+"nnoremap <leader>le :ALEPopulateLocList<cr>
+"nnoremap <leader>lf :ALEFix<cr>
