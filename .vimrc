@@ -23,14 +23,21 @@ Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
 "Plug 'tpope/vim-vinegar'
 Plug 'corntrace/bufexplorer'
-Plug 'ryanoasis/vim-devicons'
 Plug 'embear/vim-localvimrc'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'preservim/nerdcommenter'
 "Plug 'prettier/vim-prettier'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'liuchengxu/vim-which-key'
+" On-demand lazy load
+Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+" this needs to be last apparently
+Plug 'ryanoasis/vim-devicons'
+" To register the descriptions when using the on-demand load feature,
+" use the autocmd hook to call which_key#register(), e.g., register for the Space key:
+" autocmd! User vim-which-key call which_key#register('<Space>', 'g:which_key_map')
 " All of your Plugins must be added before the following line
 call plug#end()            " required
 filetype plugin indent on    " required
@@ -64,7 +71,7 @@ colorscheme gruvbox
 "colorscheme nord
 
 "fonts and icons
-set guifont=NerdHackFontMono:h11
+"set guifont=NerdHackFontMono:h14
 let g:airline_powerline_fonts = 1
 
 "======================= Plugin Config =============================
@@ -112,9 +119,14 @@ let g:python3_host_prog = expand('/usr/local/bin/python3')
 let g:go_def_mapping_enabled = 0
 let g:go_code_completion_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
-
 " Auto formatting and importing
 let g:go_fmt_autosave = 1
+
+" WhichKey
+let g:mapleader = "\<Space>"
+let g:maplocalleader = ','
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 "======================= Auto Commands =============================
 
@@ -153,7 +165,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " linter commands
-nnoremap <leader> le :CocDiagnostics<cr>
+nnoremap <leader>le :CocDiagnostics<cr>
 " Remap keys for applying codeAction to the current line.
 nmap <leader>lc  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
