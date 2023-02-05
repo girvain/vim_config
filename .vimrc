@@ -17,12 +17,11 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'xolox/vim-misc'
 "Plug 'w0rp/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'sheerun/vim-polyglot'
+"Plug 'sheerun/vim-polyglot'
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
 "Plug 'tpope/vim-vinegar'
-Plug 'corntrace/bufexplorer'
 Plug 'embear/vim-localvimrc'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -33,6 +32,18 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key'
 " On-demand lazy load
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
+
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+" or                                , { 'branch': '0.1.x' }
+Plug 'nvim-tree/nvim-web-devicons'
+
+" Trial Area 
+" =================================================
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'sainnhe/gruvbox-material'
+" =================================================
+
 " this needs to be last apparently
 Plug 'ryanoasis/vim-devicons'
 " To register the descriptions when using the on-demand load feature,
@@ -67,7 +78,7 @@ set hlsearch
 " set colorscheme
 let g:gruvbox_bold = '1' 
 let g:gruvbox_contrast_dark = 'medium'
-colorscheme gruvbox
+colorscheme gruvbox-material
 "colorscheme nord
 
 "fonts and icons
@@ -144,15 +155,17 @@ nnoremap <leader>bd :bd <cr>
 
 " find files, code and buffers with fzf
 "nmap <Leader>f :FZF<CR>
-nnoremap <leader>ff :FZF<cr>
-nnoremap <leader>fg :Ag<cr>
-nnoremap <leader>fb :Buffers<cr>
-nnoremap <leader>fr :History<cr>
+"nnoremap <leader>ff :FZF<cr>
+"nnoremap <leader>fg :Ag<cr>
+"nnoremap <leader>fb :Buffers<cr>
+"nnoremap <leader>fr :History<cr>
 
-" toggle buffer list
-nnoremap <leader>b :BufExplorer<cr>
-nnoremap <leader>bv :BufExplorerVerticalSplit<cr>
-nnoremap <leader>bs :BufExplorerHorizontalSplit<cr>
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers({ sort_mru = true })<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+nnoremap <leader>fr <cmd>Telescope oldfiles<cr>
 
 " toggle file explorer
 nnoremap <leader>e :Explore<cr>
@@ -175,3 +188,32 @@ nmap <leader>lr <Plug>(coc-rename)
 
 "nnoremap <leader>le :ALEPopulateLocList<cr>
 "nnoremap <leader>lf :ALEFix<cr>
+"
+
+lua << EOF
+
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    disable = {},
+  },
+  indent = {
+    enable = false,
+    disable = {},
+  },
+  ensure_installed = {
+    "tsx",
+    "toml",
+    "fish",
+    "php",
+    "json",
+    "yaml",
+    "swift",
+    "html",
+    "scss"
+  },
+}
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.tsx.used_by = { "javascript", "typescript.tsx" }
+
+EOF
