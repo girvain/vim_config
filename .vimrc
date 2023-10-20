@@ -10,7 +10,7 @@ call plug#begin()
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
-Plug 'morhetz/gruvbox'
+"Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
@@ -26,7 +26,6 @@ Plug 'embear/vim-localvimrc'
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'preservim/nerdcommenter'
-"Plug 'prettier/vim-prettier'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'liuchengxu/vim-which-key'
@@ -34,14 +33,16 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.4' }
 " or                                , { 'branch': '0.1.x' }
 Plug 'nvim-tree/nvim-web-devicons'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Trial Area 
 " =================================================
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'sainnhe/gruvbox-material'
+"Plug 'sainnhe/gruvbox-material'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+Plug 'ellisonleao/gruvbox.nvim'
 " =================================================
 
 " this needs to be last apparently
@@ -76,16 +77,18 @@ set ignorecase
 set hlsearch
 
 " set colorscheme
-let g:gruvbox_bold = '1' 
-let g:gruvbox_contrast_dark = 'medium'
-colorscheme gruvbox-material
-"colorscheme nord
+"let g:gruvbox_bold = '1' 
+"let g:gruvbox_contrast_dark = 'medium'
+set background=dark
+colorscheme gruvbox
 
 "fonts and icons
 "set guifont=NerdHackFontMono:h14
 let g:airline_powerline_fonts = 1
 
 "======================= Plugin Config =============================
+
+"-----------------------------FZF ----------------------------------
 " FZF"
 set rtp+=/usr/local/opt/fzf
 let g:fzf_layout = { 'down':  '30%'}
@@ -101,8 +104,11 @@ let g:fzf_layout = { 'down':  '30%'}
 ""let g:ale_root = {'php': ['/Users/gavinross/Work/wetherspoons/wetherspoons']}
 "let g:airline#extensions#ale#enabled = 1
 
-" Coc
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"------------------------------ COC -------------------------------- 
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call ShowDocumentation()<CR>
 function! ShowDocumentation()
@@ -138,6 +144,10 @@ let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+
+"------------------------------ NERDTree -------------------------------- 
+let NERDTreeWinSize=50
+
 
 "======================= Auto Commands =============================
 
@@ -190,30 +200,41 @@ nmap <leader>lr <Plug>(coc-rename)
 "nnoremap <leader>lf :ALEFix<cr>
 "
 
-lua << EOF
+
+
+
+
+
+
+
+
+
+function! CurrentLineInfo()
+  lua << EOF
 
 require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    disable = {},
-  },
-  indent = {
-    enable = false,
-    disable = {},
-  },
-  ensure_installed = {
-    "tsx",
-    "toml",
-    "fish",
-    "php",
-    "json",
-    "yaml",
-    "swift",
-    "html",
-    "scss"
-  },
-}
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-parser_config.tsx.used_by = { "javascript", "typescript.tsx" }
+  -- A list of parser names, or "all" (the five listed parsers should always be installed)
+  ensure_installed = { "c", "lua", "vim", "help", "query", "typescript", "javascript", "html", "css" },
 
+  -- Install parsers synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- Automatically install missing parsers when entering buffer
+  -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+auto_install = false,
+highlight = {
+    enable = true,
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  }
+}
+  
 EOF
+endfunction
+<
+
+call CurrentLineInfo()
+
