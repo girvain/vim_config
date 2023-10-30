@@ -111,6 +111,7 @@ inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call ShowDocumentation()<CR>
+nnoremap <leader>ld :call ShowDocumentation()<CR>
 function! ShowDocumentation()
   if CocAction('hasProvider', 'hover')
     call CocActionAsync('doHover')
@@ -169,6 +170,7 @@ nnoremap <leader>bd :bd <cr>
 "nnoremap <leader>fg :Ag<cr>
 "nnoremap <leader>fb :Buffers<cr>
 "nnoremap <leader>fr :History<cr>
+"command! -bang Notes call fzf#vim#files('~/Dropbox', <bang>0)
 
 " Find files using Telescope command-line sugar.
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
@@ -176,6 +178,8 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers({ sort_mru = true })<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 nnoremap <leader>fr <cmd>Telescope oldfiles<cr>
+nnoremap <leader>fr <cmd>Telescope oldfiles<cr>
+command! -bang Notes :lua require'telescope.builtin'.find_files({ cwd="~/Dropbox" })
 
 " toggle file explorer
 nnoremap <leader>e :Explore<cr>
