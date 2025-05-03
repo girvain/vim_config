@@ -3,8 +3,7 @@ filetype off
 
 let g:ale_disable_lsp = 1
 
-"============================= Plugins ==================================
-" set the runtime path to include Vundle and initialize
+"============================= Plugins ================================== set the runtime path to include Vundle and initialize
 call plug#begin()
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -199,6 +198,8 @@ nmap <leader>lc  <Plug>(coc-codeaction)
 nmap <leader>lf  <Plug>(coc-fix-current)
 " Symbol renaming.
 nmap <leader>lr <Plug>(coc-rename)
+" format file, to format using lang servers default formatter
+" :call CocAcion("format")
 
 "nnoremap <leader>le :ALEPopulateLocList<cr>
 "nnoremap <leader>lf :ALEFix<cr>
@@ -218,7 +219,7 @@ function! CurrentLineInfo()
 
 require'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all" (the five listed parsers should always be installed)
-  ensure_installed = { "c", "lua", "vim", "help", "query", "typescript", "javascript", "html", "css", "python" },
+  ensure_installed = { "c", "lua", "vim", "help", "query", "typescript", "javascript", "html", "css", "clojure", "haskell", "rust" },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -235,10 +236,11 @@ highlight = {
     additional_vim_regex_highlighting = false,
   }
 }
-  
+
 EOF
 endfunction
 <
 
 call CurrentLineInfo()
+
 
